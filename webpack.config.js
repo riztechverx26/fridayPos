@@ -1,6 +1,7 @@
 const { merge } = require("webpack-merge");
 const singleSpaDefaults = require("webpack-config-single-spa-ts");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = (webpackConfigEnv, argv) => {
   const orgName = "fridayPos";
@@ -20,9 +21,15 @@ module.exports = (webpackConfigEnv, argv) => {
         template: "src/index.ejs",
         templateParameters: {
           isLocal: webpackConfigEnv && webpackConfigEnv.isLocal,
+          publicPath:"http://localhost:9000",
           orgName,
         },
       }),
+      new CopyPlugin({
+        patterns:[
+          { from: 'src/favicon.ico', to: 'favicon.ico' }
+        ]
+      })
     ],
   });
 };
